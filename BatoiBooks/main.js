@@ -17,6 +17,18 @@ document.querySelector('#app').innerHTML = `
     </p>
   </div>
 `
+
+// Mostrar todos los libros del usuario 4
+console.log(booksFromUser(data.books, 4));
+
+// Mostrar todos los libros del módulo 5021 que están en buen estado ("good")
+console.log(booksWithStatus(booksFromModule(data.books, 5021), 'good'));
+
+// Incrementar un 10% el precio de los libros y mostrarlos por consola
+console.log(incrementPriceOfbooks(data.books, 0.1));
+
+
+//extra
 console.log(getBookById(data.books, 1));
 console.log(getBookIndexById(data.books, 1));
 console.log(bookExists(data.books, 1));
