@@ -1,7 +1,9 @@
 import './style.css'
 import batoiLogo from './public/logoBatoi.png'
 import data from './src/services/datos'
-import { averagePriceOfBooks, bookExists, booksCheeperThan, booksFromModule, booksFromUser, booksNotSold, booksOfTypeNotes, booksWithStatus, getBookById, getBookIndexById, getModuleByCode, getUserById, getUserByNickName, incrementPriceOfbooks } from './src/functions';
+import books from './src/model/books.class';
+import modules from './src/model/modules.class';
+import users  from './src/model/users.class';
 
 
 
@@ -18,28 +20,16 @@ document.querySelector('#app').innerHTML = `
   </div>
 `
 
-// Mostrar todos los libros del usuario 4
-console.log(booksFromUser(data.books, 4));
+const books = new Books()
+books.populate(data.books)
 
-// Mostrar todos los libros del módulo 5021 que están en buen estado ("good")
-console.log(booksWithStatus(booksFromModule(data.books, 5021), 'good'));
+const modules = new Modules()
+modules.populate(data.modules)
 
-// Incrementar un 10% el precio de los libros y mostrarlos por consola
-console.log(incrementPriceOfbooks(data.books, 0.1));
+const users = new Users()
+users.populate(data.users)
 
-
-//extra
-console.log(getBookById(data.books, 1));
-console.log(getBookIndexById(data.books, 1));
-console.log(bookExists(data.books, 1));
-console.log(booksFromUser(data.books, 1));
-console.log(booksFromModule(data.books, 1));
-console.log(booksCheeperThan(data.books, 10));
-console.log(booksWithStatus(data.books, 'good'));
-console.log(averagePriceOfBooks(data.books));
-console.log(booksOfTypeNotes(data.books));
-console.log(booksNotSold(data.books));
-console.log(incrementPriceOfbooks(data.books, 0.1));
-console.log(getUserById(data.users, 1));
-console.log(getUserByNickName(data.users, 'Ximo'));
-console.log(getModuleByCode(data.modules, 'CV0001'));
+console.log(books.toString());
+console.log(books.booksFromModule(5021));
+console.log(books.booksWithStatus('new'));
+console.log(books.incrementPriceOfbooks(0.1));
