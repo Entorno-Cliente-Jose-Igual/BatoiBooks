@@ -6,8 +6,8 @@ export default class Modules{
         this.data = [];
     }
 
-    populate(){
-        const modulos = apiModules.getDBModules();
+    async populate(){
+        const modulos = await apiModules.getDBModules();
         this.data = modulos.map(modul => new Module(modul.code, modul.cliteral, modul.vliteral, modul.courseId));
     }
 

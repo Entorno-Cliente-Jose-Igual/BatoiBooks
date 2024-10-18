@@ -6,9 +6,9 @@ export default class Books{
         this.data = [];
     }
 
-    populate(){
-        const libros = apiBooks.getDBBooks();
-        this.data = libros.map(libro => new Book(libro));
+    async populate(){
+        const libros =  await apiBooks.getDBBooks();
+        this.data = libros.map(libro => new Book(libro));      
     }
 
     addBook(book){
@@ -18,13 +18,18 @@ export default class Books{
         return libro;
     }
     
-    removeBook(id){
+    async removeBook(id){
         const bookIndex = this.data.findIndex(book => book.id === id);
         if (bookIndex === -1) {
             throw new Error('No se ha podido eliminar el libro, compruebe que el id es correcto');
-        } else {
-            this.data = this.data.filter(book => book.id !== id);
+        } 
+        try{
+            const book = await apiBooks.getDBBook(id);
+        }catch(error){
+            console.log(error);
         }
+
+        this.data.splice(bookIndex,1)
     }
 
     changeBook(book){

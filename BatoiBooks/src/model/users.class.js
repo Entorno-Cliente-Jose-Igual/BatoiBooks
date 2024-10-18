@@ -6,8 +6,8 @@ export default class Users{
         this.data = [];
     }
 
-    populate(){
-        const users = apiUsers.getDBUsers();
+    async populate(){
+        const users = await apiUsers.getDBUsers();
         this.data = users.map(user => new User(user.id, user.nick, user.email, user.password));
     }
 
