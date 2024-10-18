@@ -1,12 +1,14 @@
 import Book from './book.class.js';
+import apiBooks from '../services/books.api.js';
 
 export default class Books{
     constructor(){
         this.data = [];
     }
 
-    populate(array){
-        this.data = array.map(book => new Book(book));
+    populate(){
+        const libros = apiBooks.getDBBooks();
+        this.data = libros.map(libro => new Book(libro));
     }
 
     addBook(book){

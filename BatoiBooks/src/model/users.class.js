@@ -1,12 +1,14 @@
 import User from './user.class.js';
+import apiUsers from '../services/users.api.js';
 
 export default class Users{
     constructor(){
         this.data = [];
     }
 
-    populate(array){
-        this.data = array.map(user => new User(user.id, user.nick, user.email, user.password));
+    populate(){
+        const users = apiUsers.getDBUsers();
+        this.data = users.map(user => new User(user.id, user.nick, user.email, user.password));
     }
 
     addUser(userData){
