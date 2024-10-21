@@ -28,11 +28,6 @@ await allModules.populate()
 const allUsers = new Users()
 await allUsers.populate()
 
-console.log(allUsers)
-
-allUsers.changeUserPassword('2', 'contra');
-
-
 
 console.log(allBooks.toString());
 console.log(allBooks.booksFromModule(5021));
