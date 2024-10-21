@@ -1,5 +1,5 @@
 import User from './user.class.js';
-import apiUsers from '../services/users.api.js';
+import api from '../services/users.api.js';
 
 export default class Users{
     constructor(){
@@ -7,11 +7,11 @@ export default class Users{
     }
 
     async populate(){
-        const users = await apiUsers.getDBUsers();
+        const users = await api.getDBUsers();
         this.data = users.map(user => new User(user.id, user.nick, user.email, user.password));
     }
 
-    addUser(userData){
+    async addUser(userData){
         let ultimoId = this.data.reduce((max, user) => user.id > max ? user.id : max, 0);
         ultimoId++;
         const usuario = new User(ultimoId, userData.nick, userData.email, userData.password);
@@ -19,23 +19,40 @@ export default class Users{
         return usuario;
     }
 
-    removeUser(id){
-        const userIndex = this.data.findIndex(user => user.id === id);
-        if (userIndex === -1) {
-            throw new Error('No se ha podido eliminar el usuario, compruebe que el id es correcto');
-        } else {
-            this.data = this.data.filter(user => user.id !== id);
+    async removeUser(id) {
+        const index = this.data.findIndex((item) => item.id === id);
+        if (index === -1) throw new Error("User not found");
+    
+        try{
+          await api.removeDBUser(index)
+        }catch(error){
+          console.log(error)
         }
+        this.data.splice(index, 1);
     }
 
-    changeUser(user){
-        const userIndex = this.data.findIndex(b => b.id === user.id);
-        if (userIndex !== -1) {
-            this.data[userIndex] = new User(user.id,user.nick,user.email,user.password);
-            return this.data[userIndex];
-        } else {
-            throw new Error('No se ha podido modificar el user, compruebe que el id es correcto');
+    async changeUser(user) {
+        user = new User(user.id, user.nick, user.email, user.password);
+        const index = this.data.findIndex((item) => item.id === user.id);
+        if (index === -1) throw new Error("User not found");
+    
+        try{
+          await api.changeDBUser(user)
+        }catch(error){
+          console.log(error) 
         }
+    
+        this.data[index] = user;
+        return user; 
+      } 
+
+    async changeUserPassword(id, password) {
+        const datosNuevos = await api.changeDBUserPassword(id, password);
+        const usuario = new User(datosNuevos.id, datosNuevos.nick, datosNuevos.email, datosNuevos.password);
+        const index = this.data.findIndex((item) => item.id === usuario.id);
+        if (index === -1) throw new Error("User not found");
+        this.data[index] = usuario;
+        return usuario;
     }
 
     getUserById(userId){

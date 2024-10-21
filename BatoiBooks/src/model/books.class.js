@@ -15,6 +15,7 @@ export default class Books{
         let ultimoId = this.data.reduce((max, book) => book.id > max ? book.id : max, 0);
         const libro = new Book({id:ultimoId + 1, ...book});
         this.data.push(libro);
+        apiBooks.addDBBook(libro);
         return libro;
     }
     
@@ -24,7 +25,8 @@ export default class Books{
             throw new Error('No se ha podido eliminar el libro, compruebe que el id es correcto');
         } 
         try{
-            const book = await apiBooks.getDBBook(id);
+            await api.getDBBook(id);
+            await apiBooks.getDBBook(id);
         }catch(error){
             console.log(error);
         }
@@ -32,14 +34,19 @@ export default class Books{
         this.data.splice(bookIndex,1)
     }
 
-    changeBook(book){
-        const bookIndex = this.data.findIndex(b => b.id === book.id);
-        if (bookIndex !== -1) {
-            this.data[bookIndex] = new Book(book);
-            return this.data[bookIndex];
-        } else {
-            throw new Error('No se ha podido modificar el libro, compruebe que el id es correcto');
+    async changeBook(book) {
+        book = new Book(book);
+        const index = this.data.findIndex((item) => item.id === book.id);
+        if (index === -1) throw new Error("Book not found");
+    
+        try{
+          await api.changeDBBook(book)
+        }catch(error){
+          console.log(error)
         }
+    
+        this.data[index] = book;
+        return book;
     }
 
     toString(){

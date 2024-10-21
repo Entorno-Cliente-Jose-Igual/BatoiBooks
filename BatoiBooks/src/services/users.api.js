@@ -58,7 +58,7 @@ async function changeDBUser(user) {
 
 async function changeDBUserPassword(idUser,newPassword) {
     const response = await fetch(SERVER + `/users/${idUser}`,{
-        method: 'PUT',
+        method: 'PATCH',
         body: JSON.stringify({password: newPassword}),
         headers:{
             'Content-Type':'application/json'
@@ -67,7 +67,7 @@ async function changeDBUserPassword(idUser,newPassword) {
     if(!response.ok){
         throw new Error(`Error ${response.status} de la BBDD: ${response.statusText}`)
     }
-    return response.json()
+    return await response.json()
 }
 
 export default{

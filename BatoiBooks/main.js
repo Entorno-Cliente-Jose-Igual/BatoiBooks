@@ -1,9 +1,8 @@
 import './style.css'
 import batoiLogo from './public/logoBatoi.png'
-import data from './src/services/datos'
-import books from './src/model/books.class';
-import modules from './src/model/modules.class';
-import users  from './src/model/users.class';
+import Books from './src/model/books.class';
+import Modules from './src/model/modules.class';
+import Users  from './src/model/users.class';
 
 
 
@@ -20,16 +19,25 @@ document.querySelector('#app').innerHTML = `
   </div>
 `
 
-const books = new Books()
-books.populate(data.books)
+const allBooks = new Books()
+await allBooks.populate()
 
-const modules = new Modules()
-modules.populate(data.modules)
+const allModules = new Modules()
+await allModules.populate()
 
-const users = new Users()
-users.populate(data.users)
+const allUsers = new Users()
+await allUsers.populate()
 
-console.log(books.toString());
-console.log(books.booksFromModule(5021));
-console.log(books.booksWithStatus('new'));
-console.log(books.incrementPriceOfbooks(0.1));
+console.log(allUsers)
+
+allUsers.changeUserPassword('2', 'contra');
+
+
+
+console.log(allBooks.toString());
+console.log(allBooks.booksFromModule(5021));
+console.log(allBooks.booksWithStatus('new'));
+console.log(allBooks.incrementPriceOfbooks(0.1));
+
+
+
