@@ -1,11 +1,5 @@
 import './style.css'
 import batoiLogo from './public/logoBatoi.png'
-import Books from './src/model/books.class';
-import Modules from './src/model/modules.class';
-import Users  from './src/model/users.class';
-
-
-
 
 document.querySelector('#app').innerHTML = `
   <div>
@@ -13,26 +7,69 @@ document.querySelector('#app').innerHTML = `
       <img src="${batoiLogo}" class="logo" alt="BatoiLogo" />
     </a>
     <h1>BatoiBooks</h1>
-    <p class="read-the-docs">
-      Abre la consola para ver el resultado
-    </p>
+
+    <nav>
+      <ul>
+        <li><a href="#list">Ver Libros</a></li>
+        <li><a href="#form">Añadir Libro</a></li>
+        <li><a href="#about">Acerca de...</a></li>
+      </ul>
+    </nav>
+    <div id="messages"></div>
+    <div id="list"></div>
+    <div id="form"></div>
+  <div>
+    <label for="id-remove">Id:</label>
+    <input type="number" id="id-remove">
+    <button id="remove">Borrar libro</button>
+  </div>
+  <form id="bookForm">
+    <div>
+      <label for="id-module">Módulo:</label>
+      <select id="id-module">
+        <option>- Selecciona un módulo -</option>
+      </select>
+    </div>
+
+    <div>
+      <label for="publisher">Editorial:</label>
+      <input type="text" id="publisher" required>
+    </div>
+
+    <div>
+      <label for="price">Precio:</label>
+      <input type="number" id="price">
+    </div>
+
+    <div>
+      <label for="pages">Páginas:</label>
+      <input type="number" id="pages">
+    </div>
+
+    <div>
+      <label>Estado:</label>
+      <!-- Aquí poned un radiobutton para cada estado -->
+      <input type="radio" name="status" value="new">Nuevo
+      <input type="radio" name="status" value="good">Bueno      
+      <input type="radio" name="status" value="used">Usado
+      <input type="radio" name="status" value="bad">Malo
+      <input type="radio" name="status" value="digital">Digital
+    </div>
+
+    <div>
+      <label for="comments">Comentarios:</label>
+      <textarea id="comments"></textarea>
+    </div>
+
+    <button type="submit">Añadir</button>
+    <button type="reset">Reset</button>
+  </form>
   </div>
 `
 
-const allBooks = new Books()
-await allBooks.populate()
-
-const allModules = new Modules()
-await allModules.populate()
-
-const allUsers = new Users()
-await allUsers.populate()
-
-
-console.log(allBooks.toString());
-console.log(allBooks.booksFromModule(5021));
-console.log(allBooks.booksWithStatus('new'));
-console.log(allBooks.incrementPriceOfbooks(0.1));
-
+document.addEventListener('DOMContentLoaded', () => {
+  const myController = new Controller()
+  myController.init()
+})
 
 
