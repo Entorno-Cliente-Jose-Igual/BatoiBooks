@@ -2,6 +2,7 @@ import Modules from "../model/modules.class";
 import Users from "../model/users.class";
 import Books from "../model/books.class";
 import View from '../view/view.class';
+import Book from "../model/book.class";
 
 export default class Controller{
     constructor(){
@@ -26,12 +27,15 @@ export default class Controller{
     }
 
     handleSubmitBook(payload){
-        alert('Formulario enviado');
+        alert('Creando libro');
+        const libro = new Book(payload);
+        this.model.books.addBook(libro);
         console.log(payload);
     }
 
     handleRemoveBook(id){
-        alert('Borrando libro');
+        alert('Borrando libro con id: ' + id);
+        this.model.books.removeBook(id);
         console.log(id);
     }
 }
