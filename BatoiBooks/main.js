@@ -1,5 +1,6 @@
 import './style.css'
 import batoiLogo from './public/logoBatoi.png'
+import Controller from './src/controller/controller.class'
 
 document.querySelector('#app').innerHTML = `
   <div>

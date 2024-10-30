@@ -9,7 +9,12 @@ export default class View{
     }
 
     renderModulesSelect(modules){
-        const select = document.getElementById('id-module');
+        const selectUI = document.getElementById("id-module")
+        modules.forEach(module => {
+            const option = document.createElement('option');
+            option.value = module.code;
+            option.textContent = module.cliteral;
+            selectUI.appendChild(option)});
     }
 
     renderBook(book){
@@ -20,7 +25,7 @@ export default class View{
         <div>
           <h3>${book.moduleCode} (${book.id})</h3>
           <h4>${book.publisher}</h4>
-          <p>${$book.pages}</p>
+          <p>${book.pages} paginas</p>
           <p>Estado: ${book.status}</p>
           <p>${book.soldDate}</p>
           <p>${book.comments}</p>
@@ -32,6 +37,7 @@ export default class View{
 
     renderRemoveBook(){
         const removeUI = document.createElement('div');
+
     }
 
     showMessage(type,message){
@@ -65,7 +71,7 @@ export default class View{
         })
        }
        
-       setBookRemoveHandler(callback) {
+       setRemoveBookHandler(callback) {
          this.remove.addEventListener('click', () => {
            // recoge la id del libro a borrar y la pasa a la fn
            const idToRemove = document.getElementById('id-remove').value
