@@ -37,7 +37,12 @@ export default class View{
 
     renderRemoveBook(){
         const removeUI = document.createElement('div');
-
+        removeUI.className = 'remove';
+        removeUI.innerHTML = `
+        <label for="id-remove">Id:</label>
+        <input type="number" id="id-remove">
+        <button id="remove">Borrar libro</button>`;
+        this.remove.appendChild(removeUI);
     }
 
     showMessage(type,message){

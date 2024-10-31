@@ -11,11 +11,24 @@ export default class Books{
         this.data = libros.map(libro => new Book(libro));      
     }
 
-    addBook(book){
-        let ultimoId = this.data.reduce((max, book) => book.id > max ? book.id : max, 0);
-        const libro = new Book({id:ultimoId + 1, ...book});
+    async addBook(book){
+        const libros = await apiBooks.getDBBooks();
+    
+        // Map the IDs and filter out any invalid ones
+        const ids = libros.map(libro => parseInt(libro.id, 10)).filter(id => !isNaN(id));
+        
+        // Calculate the maximum ID
+        const maxId = ids.length > 0 ? Math.max(...ids) : 0;
+        
+        // Create a new book with the next ID
+        const libro = new Book({ id: (maxId + 1).toString(), ...book });
+        
+        // Add the new book to the data array
         this.data.push(libro);
-        apiBooks.addDBBook(libro);
+        
+        // Save the new book to the database
+        await apiBooks.addDBBook(libro);
+        
         return libro;
     }
     

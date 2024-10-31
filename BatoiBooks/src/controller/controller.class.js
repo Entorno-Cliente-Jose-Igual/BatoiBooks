@@ -27,15 +27,12 @@ export default class Controller{
     }
 
     handleSubmitBook(payload){
-        alert('Creando libro');
-        const libro = new Book(payload);
-        this.model.books.addBook(libro);
-        console.log(payload);
+        const libro = this.model.books.addBook(payload);
+        this.view.renderBook(libro);
     }
 
     handleRemoveBook(id){
-        alert('Borrando libro con id: ' + id);
-        this.model.books.removeBook(id);
-        console.log(id);
+        const libro = this.model.books.removeBook(id);
+        this.view.renderBook(libro);
     }
 }
