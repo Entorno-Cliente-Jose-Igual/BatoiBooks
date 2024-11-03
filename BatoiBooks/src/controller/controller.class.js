@@ -2,7 +2,6 @@ import Modules from "../model/modules.class";
 import Users from "../model/users.class";
 import Books from "../model/books.class";
 import View from '../view/view.class';
-import Book from "../model/book.class";
 
 export default class Controller{
     constructor(){
@@ -15,24 +14,42 @@ export default class Controller{
     }
 
     async init(){
-        await Promise.all([
-            this.model.modules.populate(),
-            this.model.users.populate(),
-            this.model.books.populate()
-        ]);
-       this.view.renderModulesSelect(this.model.modules.data);
-       this.model.books.data.forEach(book => this.view.renderBook(book));
-       this.view.setBookSubmitHandler(this.handleSubmitBook.bind(this));
-       this.view.setRemoveBookHandler(this.handleRemoveBook.bind(this));
+        try {
+            await Promise.all([
+                this.model.modules.populate(),
+                this.model.users.populate(),
+                this.model.books.populate()
+            ]);
+            this.view.renderModulesSelect(this.model.modules.data);
+            this.model.books.data.forEach(book => this.view.renderBook(book, this.model.modules.data));
+            this.view.setBookSubmitHandler(this.handleSubmitBook.bind(this));
+            this.view.setBookRemoveHandler(this.handleRemoveBook.bind(this));
+        } catch (error) {
+            this.view.showMessage('error', 'Error al inicializar los datos: ' + error.message);
+        }
     }
 
-    handleSubmitBook(payload){
-        const libro = this.model.books.addBook(payload);
-        this.view.renderBook(libro);
+    async handleSubmitBook(payload){
+        try {
+            const libro = await this.model.books.addBook(payload);
+            this.view.renderBook(libro,this.model.modules.data);
+            this.view.showMessage('success', 'El libro ha sido añadido correctamente');
+        } catch (error) {
+            this.view.showMessage('error', 'Error al añadir el libro: ' + error.message);
+        }
     }
 
-    handleRemoveBook(id){
-        const libro = this.model.books.removeBook(id);
-        this.view.renderBook(libro);
+    async handleRemoveBook(id){
+        try {
+            const bookExists = this.model.books.data.some(book => book.id === id);
+            if (!bookExists) {
+                throw new Error('El libro no existe');
+            }
+            await this.model.books.removeBook(id);
+            this.view.removeBookFromView(id);
+            this.view.showMessage('success', 'El libro ha sido eliminado correctamente');
+        } catch (error) {
+            this.view.showMessage('error', 'Error al eliminar el libro: ' + error.message);
+        }
     }
 }

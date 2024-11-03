@@ -5,7 +5,7 @@
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  background-color: #313030;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -25,7 +25,8 @@ a:hover {
 body {
   margin: 0;
   display: flex;
-  place-items: center;
+  justify-content: center;
+  align-items: center;
   min-width: 320px;
   min-height: 100vh;
 }
@@ -40,6 +41,8 @@ h1 {
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
+  background-color: #444b56;
+
 }
 
 .logo {
@@ -55,13 +58,89 @@ h1 {
   filter: drop-shadow(0 0 2em #f7df1eaa);
 }
 
+nav ul{
+  display: flex;
+  justify-content: center;
+  gap: 1em;
+  margin: 2em 0;
+  list-style-type: none;
+}
+
+nav ul li a{
+  color: #ffffff;
+}
+
+#list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: center;
+  padding: 16px;
+}
+
 .card {
-  padding: 2em;
+  border-radius: 8px;
+  padding: 16px;
+  margin: 16px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #5fb0d2;
+  width: 300px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  text-align: center;
+}
+
+.card div{
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.card img {
+  max-width: 100px;
+  margin-bottom: 16px;
+}
+
+.card div {
+  text-align: left;
+  width: 100%;
+}
+
+.card h3 {
+  margin: 0;
+  font-size: 1.2em;
+  color: #333;
+}
+
+.card h4 {
+  margin: 0.5em 0;
+  font-size: 1em;
+  color: #555;
+}
+
+.card p {
+  margin: 0.5em 0;
+  color: #666;
+}
+
+.card h4:last-of-type {
+  color: #007bff;
+  font-weight: bold;
 }
 
 .read-the-docs {
   color: #888;
 }
+
 
 button {
   border-radius: 8px;
@@ -82,6 +161,121 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
+form {
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 2rem;
+  border-radius: 8px;
+  background-color: #8c5dafb1;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+form div {
+  margin-bottom: 1rem;
+}
+
+form label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+  color: white;
+}
+
+form input[type="radio"] {
+  margin: 20px 40px;
+  justify-content: space-around;
+} 
+
+form input[type="text"],
+form input[type="number"],
+form select,
+form textarea {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #010000;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+form input[type="radio"] {
+  margin-right: 0.5rem;
+}
+
+form button[type="submit"],
+form button[type="reset"] {
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+
+form button[type="submit"] {
+  background-color: #007bff;
+  color: rgb(177, 55, 55);
+}
+
+form button[type="submit"]:hover {
+  border-color: #0056b3;
+}
+
+form button[type="reset"] {
+  background-color: #6fc9ed;
+  color: black;
+}
+
+form button[type="reset"]:hover {
+  border-color: #02abf9;
+}
+
+.btn-close {
+  background-color: transparent;
+  border: none;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #333;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.btn-close:hover {
+  color: #ff0000;
+}
+
+.btn-close:focus {
+  outline: none;
+  color: #ff0000;
+}
+  
+.successalert {
+  background-color: #7c7d86;
+  color: #ffffff;
+  padding: 1rem;
+  border-radius: 8px;
+  margin: 10px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.erroralert {
+  background-color: #7c7d86;
+  color: #ffffff;
+  padding: 1rem;
+  margin: 10px;
+  border-radius: 8px;
+  font-weight: bold;
+  text-align: center;
+}
+
+footer{
+  background-color: #777777;
+  padding: 40px;
+  margin: 10px;
+}
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
@@ -93,4 +287,9 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
+}
+
+*{
+  margin: 0%;
+  padding: 0%;
 }

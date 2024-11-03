@@ -1,5 +1,5 @@
-export default class View{
-    constructor(){
+export default class View {
+    constructor() {
         this.bookList = document.getElementById('list');
         this.about = document.getElementById('about');
         this.form = document.getElementById('form');
@@ -8,79 +8,93 @@ export default class View{
         this.bookForm = document.getElementById('bookForm');
     }
 
-    renderModulesSelect(modules){
-        const selectUI = document.getElementById("id-module")
+    renderModulesSelect(modules) {
+        const selectUI = document.getElementById("id-module");
+        const defaultOption = document.createElement('option');
+        defaultOption.value = '';
+        defaultOption.textContent = 'Seleccione un módulo';
+        defaultOption.disabled = true;
+        defaultOption.selected = true;
+        selectUI.appendChild(defaultOption);
         modules.forEach(module => {
             const option = document.createElement('option');
             option.value = module.code;
             option.textContent = module.cliteral;
-            selectUI.appendChild(option)});
+            selectUI.appendChild(option);
+        });
+
+        selectUI.required = true
     }
 
-    renderBook(book){
+    renderBook(book, modules = []) {
         const bookUI = document.createElement('div');
         bookUI.className = 'card';
+        bookUI.setAttribute('data-id', book.id); // Añadir el atributo data-id
+
+        const moduleName = modules.find(module => module.code === book.moduleCode)?.cliteral ?? 'Desconocido';
+
         bookUI.innerHTML = `
-        <img src="${book.photo}" alt="Libro: ${book.id}">
+        <img src="${book.photo === '' ? '/public/defaultIMG.jpg' : book.photo}" alt="Libro: ${book.id}">
         <div>
-          <h3>${book.moduleCode} (${book.id})</h3>
+          <h3>${moduleName} (${book.id})</h3>
           <h4>${book.publisher}</h4>
           <p>${book.pages} paginas</p>
           <p>Estado: ${book.status}</p>
-          <p>${book.soldDate}</p>
+          <p>${book.soldDate ? 'Fecha de venta: ' + book.soldDate : 'En venta'}</p>
           <p>${book.comments}</p>
-          <h4>${book.price} €</h4>
+          <h4>Precio: ${book.price} €</h4>
         </div>`;
 
         this.bookList.appendChild(bookUI);
     }
 
-    renderRemoveBook(){
-        const removeUI = document.createElement('div');
-        removeUI.className = 'remove';
-        removeUI.innerHTML = `
-        <label for="id-remove">Id:</label>
-        <input type="number" id="id-remove">
-        <button id="remove">Borrar libro</button>`;
-        this.remove.appendChild(removeUI);
+    removeBookFromView(id) {
+        const bookUI = this.bookList.querySelector(`[data-id="${id}"]`);
+        if (bookUI) {
+            this.bookList.removeChild(bookUI);
+        }
     }
 
-    showMessage(type,message){
+    showMessage(type, message) {
         const messageUI = document.createElement('div');
-        messageUI.className = type + "alert alert-danger alert-dismissible";
+        messageUI.className = type + " alert alert-danger alert-dismissible";
         messageUI.innerHTML = `
         ${message}
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" onclick="this.parentElement.remove()">x</button>
         `;
         this.messages.appendChild(messageUI);
+
+        setTimeout(() => {
+            if (messageUI.parentElement) {
+                messageUI.parentElement.removeChild(messageUI);
+            }
+        }, 3000);
     }
 
-    setBookSubmitHandler(callback) {  
+    setBookSubmitHandler(callback) {
         this.bookForm.addEventListener('submit', (event) => {
-           event.preventDefault()
-           // a continuación recoge los datos del formulario y los guarda en un objeto // por último llama a la función recibida pasándole dicho objeto
-           const moduleCode = document.getElementById('id-module').value;
-           const publisher = document.getElementById('publisher').value;
-           const price = document.getElementById('price').value;
-           const pages = document.getElementById('pages').value;
-           const status = document.querySelector('input[name="status"]:checked')?.value;
-           const comments = document.getElementById('comments').value;
-          callback({
-            moduleCode,
-            publisher,
-            price, 
-            pages,
-            status, 
-            comments
-          })
-        })
-       }
-       
-       setRemoveBookHandler(callback) {
-         this.remove.addEventListener('click', () => {
-           // recoge la id del libro a borrar y la pasa a la fn
-           const idToRemove = document.getElementById('id-remove').value
-           callback(idToRemove)
-         })
-       }
+            event.preventDefault();
+            const moduleCode = document.getElementById('id-module').value;
+            const publisher = document.getElementById('publisher').value;
+            const price = document.getElementById('price').value;
+            const pages = document.getElementById('pages').value;
+            const status = document.querySelector('input[name="status"]:checked')?.value;
+            const comments = document.getElementById('comments').value;
+            callback({
+                moduleCode,
+                publisher,
+                price,
+                pages,
+                status,
+                comments
+            });
+        });
+    }
+
+    setBookRemoveHandler(callback) {
+        document.getElementById('remove').addEventListener('click', () => {
+            const idToRemove = document.getElementById('id-remove').value;
+            callback(idToRemove);
+        });
+    }
 }

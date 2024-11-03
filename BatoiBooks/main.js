@@ -27,8 +27,7 @@ document.querySelector('#app').innerHTML = `
   <form id="bookForm">
     <div>
       <label for="id-module">Módulo:</label>
-      <select id="id-module">
-        <option>- Selecciona un módulo -</option>
+      <select id="id-module" required>
       </select>
     </div>
 
@@ -39,22 +38,22 @@ document.querySelector('#app').innerHTML = `
 
     <div>
       <label for="price">Precio:</label>
-      <input type="number" id="price">
+      <input type="number" id="price" required>
     </div>
 
     <div>
       <label for="pages">Páginas:</label>
-      <input type="number" id="pages">
+      <input type="number" id="pages" required>
     </div>
 
     <div>
       <label>Estado:</label>
       <!-- Aquí poned un radiobutton para cada estado -->
-      <input type="radio" name="status" value="new">Nuevo
-      <input type="radio" name="status" value="good">Bueno      
-      <input type="radio" name="status" value="used">Usado
-      <input type="radio" name="status" value="bad">Malo
-      <input type="radio" name="status" value="digital">Digital
+      <input type="radio" name="status" value="new" required>Nuevo
+      <input type="radio" name="status" value="good" required>Bueno      
+      <input type="radio" name="status" value="used" required>Usado
+      <input type="radio" name="status" value="bad" required>Malo
+      <input type="radio" name="status" value="digital" required>Digital
     </div>
 
     <div>
@@ -66,6 +65,9 @@ document.querySelector('#app').innerHTML = `
     <button type="reset">Reset</button>
   </form>
   </div>
+  <footer>
+    <p>© 2021 BatoiBooks José</p>
+  </footer>
 `
 
 document.addEventListener('DOMContentLoaded', () => {

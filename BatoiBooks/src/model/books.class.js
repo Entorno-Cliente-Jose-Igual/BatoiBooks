@@ -38,8 +38,7 @@ export default class Books{
             throw new Error('No se ha podido eliminar el libro, compruebe que el id es correcto');
         } 
         try{
-            await api.getDBBook(id);
-            await apiBooks.getDBBook(id);
+            await apiBooks.removeDBBook(id);
         }catch(error){
             console.log(error);
         }
