@@ -66,7 +66,7 @@ document.querySelector('#app').innerHTML = `
   </form>
   </div>
   <footer>
-    <p>© 2021 BatoiBooks José</p>
+    <p>© 2024 BatoiBooks José Igual Avila</p>
   </footer>
 `
 
