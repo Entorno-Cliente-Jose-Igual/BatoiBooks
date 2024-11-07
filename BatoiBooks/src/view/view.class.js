@@ -42,7 +42,16 @@ export default class View {
           <p>Estado: ${book.status}</p>
           <p>${book.soldDate ? 'Fecha de venta: ' + book.soldDate : 'En venta'}</p>
           <p>${book.comments}</p>
-          <h4>Precio: ${book.price} €</h4>
+          <h4>Precio: ${book.price.toFixed(2)} €</h4>
+          <button type="addToShoppingCart">
+            <span class="material-icons">add_shopping_cart</span>
+          </button>
+          <button type"editBook">
+            <span class="material-icons">edit</span>
+          </button>
+          <button type="deleteBook">
+            <span class="material-icons">delete</span>
+          </button>
         </div>`;
 
         this.bookList.appendChild(bookUI);
@@ -54,6 +63,21 @@ export default class View {
             this.bookList.removeChild(bookUI);
         }
     }
+
+    renderBookInForm(book){
+        document.getElementById('id-module').value = book.moduleCode;
+        document.getElementById('publisher').value = book.publisher;
+        document.getElementById('price').value = book.price;
+        document.getElementById('pages').value = book.pages;
+        document.querySelector(`input[name="status"][value="${book.status}"]`).checked = true;
+        document.getElementById('comments').value = book.comments;
+    }
+
+    renderEditBook(book, modules) {
+
+    }
+
+
 
     showMessage(type, message) {
         const messageUI = document.createElement('div');

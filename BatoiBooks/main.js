@@ -25,6 +25,10 @@ document.querySelector('#app').innerHTML = `
     <button id="remove">Borrar libro</button>
   </div>
   <form id="bookForm">
+    <h3>Añadir libro</h3>
+    <div id="divId" style="visibility: hidden;">
+      <input type="text" id="bookId">
+    </div>
     <div>
       <label for="id-module">Módulo:</label>
       <select id="id-module" required>
