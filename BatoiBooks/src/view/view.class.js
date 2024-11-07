@@ -43,13 +43,13 @@ export default class View {
           <p>${book.soldDate ? 'Fecha de venta: ' + book.soldDate : 'En venta'}</p>
           <p>${book.comments}</p>
           <h4>Precio: ${book.price.toFixed(2)} €</h4>
-          <button type="addToShoppingCart">
+          <button type="button" data-action="cart" data-id="${book.id}">
             <span class="material-icons">add_shopping_cart</span>
           </button>
-          <button type"editBook">
+          <button type="button" data-action="edit" data-id="${book.id}">
             <span class="material-icons">edit</span>
           </button>
-          <button type="deleteBook">
+          <button type="button" data-action="remove" data-id="${book.id}">
             <span class="material-icons">delete</span>
           </button>
         </div>`;
@@ -65,6 +65,9 @@ export default class View {
     }
 
     renderBookInForm(book){
+        document.getElementById('divId').style.visibility = 'visible';
+        document.getElementById('bookId').value = book.id;
+        document.getElementById('bookId').disabled = true;
         document.getElementById('id-module').value = book.moduleCode;
         document.getElementById('publisher').value = book.publisher;
         document.getElementById('price').value = book.price;

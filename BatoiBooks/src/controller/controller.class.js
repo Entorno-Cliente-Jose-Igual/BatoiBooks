@@ -27,6 +27,14 @@ export default class Controller{
             this.model.books.data.forEach(book => this.view.renderBook(book, this.model.modules.data));
             this.view.setBookSubmitHandler(this.handleSubmitBook.bind(this));
             this.view.setBookRemoveHandler(this.handleRemoveBook.bind(this));
+            Array.from(document.getElementsByClassName('material-icons')).forEach(element => {
+                element.addEventListener('click', (event) => {
+                    const action = event.target.dataset.action;
+                    const bookId = event.target.dataset.bookId;
+                    this.handleBookButtonClicked(action, bookId);
+                });
+            });
+
         } catch (error) {
             this.view.showMessage('error', 'Error al inicializar los datos: ' + error.message);
         }

@@ -19,11 +19,6 @@ document.querySelector('#app').innerHTML = `
     <div id="messages"></div>
     <div id="list"></div>
     <div id="form"></div>
-  <div>
-    <label for="id-remove">Id:</label>
-    <input type="number" id="id-remove">
-    <button id="remove">Borrar libro</button>
-  </div>
   <form id="bookForm">
     <h3>Añadir libro</h3>
     <div id="divId" style="visibility: hidden;">

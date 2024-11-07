@@ -1,9 +1,15 @@
 import { defineConfig } from 'vite';
 
 export default defineConfig({
-  server: {
-    watch: {
-      usePolling: true, // This can help in some environments
-    },
+  build: {
+      outDir: 'dist', // Directorio de salida
+      rollupOptions: {
+          output: {
+              manualChunks: undefined,
+              entryFileNames: 'bundle.js', // Nombre del archivo de salida
+              chunkFileNames: 'bundle.js',
+              assetFileNames: 'bundle.[ext]',
+          },
+      },
   },
 });
