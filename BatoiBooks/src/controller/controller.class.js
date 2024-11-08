@@ -43,14 +43,14 @@ export default class Controller{
         try {
             if(payload.id){
                 payload.id = parseInt(payload.id);
-                await this.model.books.editBook(payload);
+                const editedBook = await this.model.books.changeBook(payload.id);
                 this.view.showMessage('success', 'El libro ha sido editado correctamente');
-                this.view.renderBook(payload);
+                this.view.renderBook(editedBook);
                 return;
             }
 
-            const libro = await this.model.books.addBook(payload);
-            this.view.renderBook(libro,this.model.modules.data);
+            const book = await this.model.books.addBook(payload);
+            this.view.renderBook(book);
             this.view.showMessage('success', 'El libro ha sido añadido correctamente');
         } catch (error) {
             this.view.showMessage('error', 'Error al añadir el libro: ' + error.message);

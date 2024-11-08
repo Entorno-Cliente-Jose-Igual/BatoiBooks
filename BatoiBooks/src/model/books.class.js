@@ -52,7 +52,7 @@ export default class Books{
         if (index === -1) throw new Error("Book not found");
     
         try{
-          await api.changeDBBook(book)
+          await apiBooks.changeDBBook(book)
         }catch(error){
           console.log(error)
         }
