@@ -16,6 +16,9 @@ export default class Controller{
     }
 
     async init(){
+        this.view.setBookListHandler(this.handleBookButtonClicked.bind(this));
+        this.view.setBookResetHandler(this.handleBookReset.bind(this));
+
         try {
             await Promise.all([
                 this.model.modules.populate(),
@@ -27,21 +30,25 @@ export default class Controller{
             this.model.books.data.forEach(book => this.view.renderBook(book, this.model.modules.data));
             this.view.setBookSubmitHandler(this.handleSubmitBook.bind(this));
             this.view.setBookRemoveHandler(this.handleRemoveBook.bind(this));
-            Array.from(document.getElementsByClassName('material-icons')).forEach(element => {
-                element.addEventListener('click', (event) => {
-                    const action = event.target.dataset.action;
-                    const bookId = event.target.dataset.bookId;
-                    this.handleBookButtonClicked(action, bookId);
-                });
-            });
-
+            this.addEventListenersToButtons2();
         } catch (error) {
             this.view.showMessage('error', 'Error al inicializar los datos: ' + error.message);
         }
     }
 
     async handleSubmitBook(payload){
+        payload.pages = parseInt(payload.pages);
+        payload.price = parseFloat(payload.price);
+
         try {
+            if(payload.id){
+                payload.id = parseInt(payload.id);
+                await this.model.books.editBook(payload);
+                this.view.showMessage('success', 'El libro ha sido editado correctamente');
+                this.view.renderBook(payload);
+                return;
+            }
+
             const libro = await this.model.books.addBook(payload);
             this.view.renderBook(libro,this.model.modules.data);
             this.view.showMessage('success', 'El libro ha sido añadido correctamente');
@@ -67,19 +74,27 @@ export default class Controller{
         }
     }
 
-    handleBookButtonClicked(action,bookId){
+    async handleBookButtonClicked(action, bookId) {
+        const book = this.model.books.getBookById(bookId);
         switch (action) {
             case 'remove':
-                this.handleRemoveBook(bookId);
+                console.log("Botón de eliminación pulsado");
+                await this.handleRemoveBook(bookId);
                 break;
             case 'cart':
-                this.model.cart.addItem(this.model.books.getBookById(bookId));
+                console.log("Añadir al carrito");
+                this.model.cart.addItem(book);
                 break;
             case 'edit':
-                this.view.renderBookInForm(this.model.books.getBookById(bookId));
+                console.log("Editar libro");
+                this.view.renderBookInForm(book);
                 break;
             default:
                 break;
         }
+    }
+
+    handleBookReset() {
+        this.view.renderFormToAddBook();
     }
 }

@@ -24,13 +24,12 @@ export default class View {
         });
 
         selectUI.required = true
+        selectUI.value = '';
     }
 
     renderBook(book, modules = []) {
         const bookUI = document.createElement('div');
         bookUI.className = 'card';
-        bookUI.setAttribute('data-id', book.id); // Añadir el atributo data-id
-
         const moduleName = modules.find(module => module.code === book.moduleCode)?.cliteral ?? 'Desconocido';
 
         bookUI.innerHTML = `
@@ -43,15 +42,17 @@ export default class View {
           <p>${book.soldDate ? 'Fecha de venta: ' + book.soldDate : 'En venta'}</p>
           <p>${book.comments}</p>
           <h4>Precio: ${book.price.toFixed(2)} €</h4>
-          <button type="button" data-action="cart" data-id="${book.id}">
-            <span class="material-icons">add_shopping_cart</span>
-          </button>
-          <button type="button" data-action="edit" data-id="${book.id}">
-            <span class="material-icons">edit</span>
-          </button>
-          <button type="button" data-action="remove" data-id="${book.id}">
-            <span class="material-icons">delete</span>
-          </button>
+          <div id="botones">
+            <button class="botonesLibro" type="button" data-action="cart" data-id="${book.id}">
+              <span class="material-icons">add_shopping_cart</span>
+            </button>
+            <button class="botonesLibro" type="button" data-action="edit" data-id="${book.id}">
+              <span class="material-icons">edit</span>
+            </button>
+            <button class="botonesLibro" type="button" data-action="remove" data-id="${book.id}">
+              <span class="material-icons">delete</span>
+            </button>
+          </div>
         </div>`;
 
         this.bookList.appendChild(bookUI);
@@ -64,7 +65,37 @@ export default class View {
         }
     }
 
+    setBookListHandler(callback) {
+        this.bookList.addEventListener('click', (event) => {
+            const buttonClicked = event.target.closest('button');
+            if (!buttonClicked) {
+                return;
+            }
+            const action = event.target.getAttribute('data-action');
+            const bookId = event.target.getAttribute('data-id');
+            callback(action, bookId);
+        });
+    }
+
+    setBookResetHandler(callback) {
+        const resetButton = this.bookForm.querySelector("button[type='reset']");
+        resetButton.addEventListener('click', (event) => {
+            event.preventDefault();
+            callback();
+        });
+    }
+
+    renderFormToAddBook(){
+        this.bookForm.querySelector('h3').textContent = 'Añadir libro';
+        this.bookForm.querySelector("button[type='submit']").textContent = 'Añadir';
+        document.getElementById('divId').style.visibility = 'hidden';
+        this.bookForm.reset();
+        document.getElementById('id-module').value = '';
+    }
+
     renderBookInForm(book){
+        this.bookForm.querySelector('h3').textContent = 'Editar libro';
+        this.bookForm.querySelector("button[type='submit']").textContent = 'Editar';
         document.getElementById('divId').style.visibility = 'visible';
         document.getElementById('bookId').value = book.id;
         document.getElementById('bookId').disabled = true;
@@ -75,12 +106,6 @@ export default class View {
         document.querySelector(`input[name="status"][value="${book.status}"]`).checked = true;
         document.getElementById('comments').value = book.comments;
     }
-
-    renderEditBook(book, modules) {
-
-    }
-
-
 
     showMessage(type, message) {
         const messageUI = document.createElement('div');
