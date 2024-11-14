@@ -2,7 +2,7 @@ import Modules from "../model/modules.class";
 import Users from "../model/users.class";
 import Books from "../model/books.class";
 import View from '../view/view.class';
-import Cart from "../model/cart.class";
+import Cart from '../model/cart.class';
 
 export default class Controller{
     constructor(){
@@ -16,51 +16,42 @@ export default class Controller{
     }
 
     async init(){
-        this.view.setBookListHandler(this.handleBookButtonClicked.bind(this));
-        this.view.setBookResetHandler(this.handleBookReset.bind(this));
+        this.view.setBookSubmitHandler(this.handleSubmitBook.bind(this));
+        this.view.setBookButtonsHandler(this.handleBookButtons.bind(this));
 
         try {
             await Promise.all([
                 this.model.modules.populate(),
                 this.model.users.populate(),
-                this.model.books.populate(),
-                this.model.cart.populate()
+                this.model.books.populate()
             ]);
             this.view.renderModulesSelect(this.model.modules.data);
             this.model.books.data.forEach(book => this.view.renderBook(book, this.model.modules.data));
-            this.view.setBookSubmitHandler(this.handleSubmitBook.bind(this));
-            this.view.setBookRemoveHandler(this.handleRemoveBook.bind(this));
-            this.addEventListenersToButtons2();
+
         } catch (error) {
             this.view.showMessage('error', 'Error al inicializar los datos: ' + error.message);
         }
     }
 
     async handleSubmitBook(payload){
-        payload.pages = parseInt(payload.pages);
-        payload.price = parseFloat(payload.price);
-
         try {
             if(payload.id){
-                payload.id = parseInt(payload.id);
-                const editedBook = await this.model.books.changeBook(payload.id);
-                this.view.showMessage('success', 'El libro ha sido editado correctamente');
-                this.view.renderBook(editedBook);
-                return;
+                console.log(payload);
+                const editedBook = await this.model.books.changeBook(payload);
+                this.view.showMessage('success','El libro ha sido modificado');
+                this.view.renderEditedBook(editedBook,this.model.modules.data);
+            }else{
+                const libro = await this.model.books.addBook(payload);
+                this.view.renderBook(libro,this.model.modules.data);
+                this.view.showMessage('success', 'El libro ha sido añadido correctamente');
             }
-
-            const book = await this.model.books.addBook(payload);
-            this.view.renderBook(book);
-            this.view.showMessage('success', 'El libro ha sido añadido correctamente');
+            
         } catch (error) {
             this.view.showMessage('error', 'Error al añadir el libro: ' + error.message);
         }
     }
 
     async handleRemoveBook(id){
-        if(!confirm(`¿Estás seguro de que deseas eliminar el libro con id: ${id} ?`)){
-            return;
-        }
         try {
             const bookExists = this.model.books.data.some(book => book.id === id);
             if (!bookExists) {
@@ -74,27 +65,19 @@ export default class Controller{
         }
     }
 
-    async handleBookButtonClicked(action, bookId) {
-        const book = this.model.books.getBookById(bookId);
-        switch (action) {
-            case 'remove':
-                console.log("Botón de eliminación pulsado");
-                await this.handleRemoveBook(bookId);
-                break;
+    handleBookButtons(action,id){
+        const book = this.model.books.getBookById(id)
+        switch(action){
             case 'cart':
-                console.log("Añadir al carrito");
+                console.log(id);
                 this.model.cart.addItem(book);
                 break;
             case 'edit':
-                console.log("Editar libro");
                 this.view.renderBookInForm(book);
                 break;
-            default:
-                break;
+            case 'delete': 
+                this.handleRemoveBook(id);
+                break;        
         }
-    }
-
-    handleBookReset() {
-        this.view.renderFormToAddBook();
     }
 }

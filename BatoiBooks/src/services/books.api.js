@@ -46,6 +46,7 @@ async function removeDBBook(idBook) {
 async function changeDBBook(book) {
     const response = await fetch(SERVER + `/books/${book.id}`,{
         method: 'PUT',
+        body: JSON.stringify(book),
         headers:{
             'Content-Type': 'application/json'
         },

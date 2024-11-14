@@ -47,18 +47,18 @@ export default class Books{
     }
 
     async changeBook(book) {
-        book = new Book(book);
-        const index = this.data.findIndex((item) => item.id === book.id);
+       const newBook = new Book(book);
+        const index = this.data.findIndex((item) => item.id === newBook.id);
         if (index === -1) throw new Error("Book not found");
-    
+    console.log('hola');
         try{
-          await apiBooks.changeDBBook(book)
+          await apiBooks.changeDBBook(newBook);
         }catch(error){
           console.log(error)
         }
     
-        this.data[index] = book;
-        return book;
+        this.data[index] = newBook;
+        return newBook;
     }
 
     toString(){

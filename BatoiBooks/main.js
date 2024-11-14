@@ -21,8 +21,10 @@ document.querySelector('#app').innerHTML = `
     <div id="form"></div>
   <form id="bookForm">
     <h3>Añadir libro</h3>
-    <div id="divId" style="visibility: hidden;">
-      <input type="text" id="bookId">
+
+    <div class="hidden">
+      <label for="id">ID:</label>
+      <input type"text" id="id" disabled><br>
     </div>
     <div>
       <label for="id-module">Módulo:</label>

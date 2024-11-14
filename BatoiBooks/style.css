@@ -294,6 +294,6 @@ footer{
   padding: 0%;
 }
 
-#material-icon{
-  display: flex;
+.hidden{
+  display: none;
 }

@@ -1,34 +1,34 @@
-export default class Cart{
+export default class cart {
     constructor(){
         this.data = [];
     }
 
     populate(){
-        //por ahora no hace nada
     }
 
     getBookById(id){
-        return this.data.find(book => book.id === id) ? this.data.find(book => book.id === id) : {};
+        return this.data.find(book => book.id === id) || {}
     }
 
     addItem(book){
-        if(!this.getBookById(book.id).id){
-            throw new Error(`El libro con id ${book.id} ya existe en el carrito`);
+        const bookToAdd = {...book};
+
+        if(isNaN(this.getBookById(bookToAdd.id))){
+            this.data.push(bookToAdd);
+        }else{
+            throw new Error('El libro ya está en el carrito')
         }
-        this.data.push(copyBook);
     }
 
     removeItem(id){
-       const index = this.data.findIndex(book => book.id === id);
-       if(index === -1){
-           throw new Error(`El libro con id ${id} no existe en el carrito`);
-       }
-       this.data.splice(index, 1);
+        if(this.data.find(book => book.id === id) !== undefined){
+            this.data = this.data.filter(book => book.id !== id);
+        }else{
+            throw new Error('El libro no está en el carrito')
+        }
     }
 
     toString(){
-        let text = `Cart: ${this.data.length} `;
-        this.data.forEach(book => text += `\n\t${book.toString()}`);
-        return text;
+        return this.data.map(book => book.toString()).join('\n');
     }
 }
