@@ -141,6 +141,8 @@ export default class View {
         });
     }
 
+
+
     setBookButtonsHandler(callback) {
         this.bookList.addEventListener('click',(event) => {
             const buttonClicked = event.target.closest("button");

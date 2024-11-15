@@ -1,10 +1,7 @@
 export default class Router {
     constructor() {
-        // Enlazar el contexto del método
         this.handleHashChange = this.handleHashChange.bind(this);
-        // Agregar el escuchador del evento 'hashchange'
         window.addEventListener('hashchange', this.handleHashChange);
-        // Llamar al método inicialmente para manejar el hash actual
         this.handleHashChange();
     }
 
@@ -16,7 +13,6 @@ export default class Router {
                 console.log('Mostrar vista de inicio');
                 document.getElementById("list").style.display = 'none';
                 document.getElementById("form").style.removeProperty('display');
-
                 break;
             case 'list':
                 console.log('Mostrar vista de libros');

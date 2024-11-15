@@ -74,6 +74,7 @@ export default class Controller{
                 break;
             case 'edit':
                 this.view.renderBookInForm(book);
+                document.getElementById("form").style.removeProperty('display');
                 break;
             case 'delete': 
                 this.handleRemoveBook(id);
