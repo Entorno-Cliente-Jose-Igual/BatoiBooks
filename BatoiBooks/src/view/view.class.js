@@ -1,3 +1,5 @@
+import Router from './../services/router.class.js';
+
 export default class View {
     constructor() {
         this.bookList = document.getElementById('list');
@@ -6,6 +8,7 @@ export default class View {
         this.messages = document.getElementById('messages');
         this.remove = document.getElementById('remove');
         this.bookForm = document.getElementById('bookForm');
+        this.router = new Router();
     }
 
     renderModulesSelect(modules) {
@@ -115,7 +118,7 @@ export default class View {
             if (messageUI.parentElement) {
                 messageUI.parentElement.removeChild(messageUI);
             }
-        }, 9000);
+        }, 5000);
     }
 
     setBookSubmitHandler(callback) {
