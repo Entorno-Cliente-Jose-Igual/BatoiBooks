@@ -39,12 +39,12 @@ document.querySelector('#app').innerHTML = `
 
         <div>
           <label for="price">Precio:</label>
-          <input type="number" id="price" required>
+          <input type="number" id="price" required min="0" step="0.01">
         </div>
 
         <div>
           <label for="pages">Páginas:</label>
-          <input type="number" id="pages" required>
+          <input type="number" id="pages" required min="0" step="1">
         </div>
 
         <div>
