@@ -57,6 +57,14 @@ async function changeDBBook(book) {
     return response.json()
 }
 
+async function bookDBExists(userId, moduleCode) {
+    const response = await fetch(SERVER + `/books?userId=${userId}&moduleCode=${moduleCode}`)
+    if(!response.ok){
+        throw new Error(`Error ${response.status} de la BBDD: ${response.statusText}`)
+    }
+    return await response.json()
+}
+
 export default{
     getDBBooks,
     getDBBook,

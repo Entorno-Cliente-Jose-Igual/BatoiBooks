@@ -41,6 +41,10 @@ export default class Controller{
                 this.view.showMessage('success','El libro ha sido modificado');
                 this.view.renderEditedBook(editedBook,this.model.modules.data);
             }else{
+                if(await this.model.books.bookExists(payload.id, payload.moduleCode)){
+                    this.view.setCustomValidity('El libro ya existe');
+                    this.view.showMessage('error', 'El libro ya existe ')
+                }
                 const libro = await this.model.books.addBook(payload);
                 this.view.renderBook(libro,this.model.modules.data);
                 this.view.showMessage('success', 'El libro ha sido añadido correctamente');
